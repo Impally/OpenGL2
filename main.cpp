@@ -160,8 +160,8 @@ int main()
 
 		//Create and use transforms
 		glm::mat4 trans;
-		trans = glm::rotate(trans, 90.0f, glm::vec3(0.0, 0.0, 1.0));
-		trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		trans = glm::rotate(trans,(GLfloat)glfwGetTime() * 50.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 
 		GLuint transformLoc = glGetUniformLocation(ourShader.Program, "transform");
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
