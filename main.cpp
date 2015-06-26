@@ -55,7 +55,6 @@ int main()
 	// Build and compile our shader program
 	Managers::Shader_Loader ourShader("Shaders//vertex_shader.vs", "Shaders//fragment_shader.frag");
 
-
 	// Set up vertex data (and buffer(s)) and attribute pointers
 	GLfloat vertices[] = {
 		// Positions          // Colors           // Texture Coords
@@ -135,12 +134,7 @@ int main()
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	glm::mat4 trans;
-	trans = glm::rotate(trans, 90.0f, glm::vec3(0.0, 0.0, 1.0));
-	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
 
-	GLuint transformLoc = glGetUniformLocation(ourShader.Program, "transform");
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 									 // Game loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -163,6 +157,14 @@ int main()
 
 		// Activate shader
 		ourShader.Use();
+
+		//Create and use transforms
+		glm::mat4 trans;
+		trans = glm::rotate(trans, 90.0f, glm::vec3(0.0, 0.0, 1.0));
+		trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
+		GLuint transformLoc = glGetUniformLocation(ourShader.Program, "transform");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
 		// Draw container
 		glBindVertexArray(VAO);
