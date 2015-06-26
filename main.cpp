@@ -10,6 +10,11 @@
 //Simple OpenGL Image Library
 #include <SOIL.h>
 
+//Including OpenGL Mathematics
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 //Class to load Shaders
 #include "Shader_Loaders\Shader_Loader.h"
 
@@ -22,6 +27,7 @@ const GLuint WIDTH = 800, HEIGHT = 600;
 // The MAIN function, from here we start the application and run the game loop
 int main()
 {
+
 	// Init GLFW
 	glfwInit();
 	// Set all the required options for GLFW
@@ -128,6 +134,13 @@ int main()
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glm::mat4 trans;
+	trans = glm::rotate(trans, 90.0f, glm::vec3(0.0, 0.0, 1.0));
+	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
+	GLuint transformLoc = glGetUniformLocation(ourShader.Program, "transform");
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 									 // Game loop
 	while (!glfwWindowShouldClose(window))
 	{
