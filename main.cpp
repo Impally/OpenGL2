@@ -20,10 +20,14 @@
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+bool keys[1024];
+void do_movement();
 
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
-
+		glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+		glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+		glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 // The MAIN function, from here we start the application and run the game loop
 int main()
 {
@@ -176,7 +180,7 @@ int main()
 	{
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwPollEvents();
-
+		do_movement();
 		// Render
 		// Clear the colorbuffer
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -194,10 +198,16 @@ int main()
 		// Activate shader
 		ourShader.Use();
 
-		// Create transformations
+		// Camera/View transformation
 		glm::mat4 view;
+		GLfloat radius = 10.0f;
+		//GLfloat camX = sin(glfwGetTime()) * radius;
+		//GLfloat camZ = cos(glfwGetTime()) * radius;
+
+		//view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		// Create transformations
 		glm::mat4 projection;
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 		projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 		// Get their uniform location
 		GLint modelLoc = glGetUniformLocation(ourShader.Program, "model");
@@ -215,7 +225,7 @@ int main()
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[i]);
 			GLfloat angle = 20.0f * i;
-			model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
+			model = glm::rotate(model,(GLfloat)glfwGetTime()*angle, glm::vec3(1.0f, 0.3f, 0.5f));
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -238,4 +248,31 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	GLfloat cameraSpeed = 0.05f;
+	if (key == GLFW_KEY_W)
+		cameraPos += cameraSpeed * cameraFront;
+	if (key == GLFW_KEY_S)
+		cameraPos -= cameraSpeed * cameraFront;
+	if (key == GLFW_KEY_A)
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (key == GLFW_KEY_D)
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (action == GLFW_PRESS)
+		keys[key] = true;
+	else if (action == GLFW_RELEASE)
+		keys[key] = false;
+}
+
+void do_movement()
+{
+	// Camera controls
+	GLfloat cameraSpeed = 0.01f;
+	if (keys[GLFW_KEY_W])
+		cameraPos += cameraSpeed * cameraFront;
+	if (keys[GLFW_KEY_S])
+		cameraPos -= cameraSpeed * cameraFront;
+	if (keys[GLFW_KEY_A])
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (keys[GLFW_KEY_D])
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 }
