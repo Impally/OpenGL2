@@ -1,9 +1,7 @@
-//Right now just using Camera.h, plan on updating this when I have a better feel for the tutorials functions
-//And how I need to write them.
-/*#include "Camera.h"
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
-//: Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
+#include "Camera.h"
+
+Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
 {
 	this->Position = position;
 	this->WorldUp = up;
@@ -12,8 +10,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
 	this->updateCameraVectors();
 }
 // Constructor with scalar values
-Camera::Camera(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY, GLfloat upZ, GLfloat yaw, GLfloat pitch) 
-	//: Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
+Camera::Camera(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY, GLfloat upZ, GLfloat yaw, GLfloat pitch): Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
 {
 	this->Position = glm::vec3(posX, posY, posZ);
 	this->WorldUp = glm::vec3(upX, upY, upZ);
@@ -74,4 +71,4 @@ void Camera::ProcessMouseScroll(GLfloat yoffset)
 		this->Zoom = 1.0f;
 	if (this->Zoom >= 45.0f)
 		this->Zoom = 45.0f;
-}*/
+}
