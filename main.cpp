@@ -172,6 +172,17 @@ int main()
 		glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
 		glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z);
 
+		//Defining our material struct for the fragment shader
+		GLint matAmbientLoc = glGetUniformLocation(lightShader.Program, "material.ambient");
+		GLint matDiffuseLoc = glGetUniformLocation(lightShader.Program, "material.diffuse");
+		GLint matSpecularLoc = glGetUniformLocation(lightShader.Program, "material.specular");
+		GLint matShineLoc = glGetUniformLocation(lightShader.Program, "material.shininess");
+
+		glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
+		glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
+		glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+		glUniform1f(matShineLoc, 32.0f);
+
 		// Create camera transformations
 		glm::mat4 view;
 		view = camera.GetViewMatrix();
