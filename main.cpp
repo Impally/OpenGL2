@@ -183,6 +183,26 @@ int main()
 		glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
 		glUniform1f(matShineLoc, 32.0f);
 
+		//defining the light source
+
+		GLint lightAmbientLoc = glGetUniformLocation(lightShader.Program, "light.ambient");
+		GLint lightDiffuseLoc = glGetUniformLocation(lightShader.Program, "light.diffuse");
+		GLint lightSpecularLoc = glGetUniformLocation(lightShader.Program, "light.specular");
+
+		glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
+		glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f); // Let's darken the light a bit to fit the scene
+		glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
+		glm::vec3 lightColor;
+		lightColor.x = sin(glfwGetTime() * 2.0f);
+		lightColor.y = sin(glfwGetTime() * 0.7f);
+		lightColor.z = sin(glfwGetTime() * 1.3f);
+
+		glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f); // Decrease the influence
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // Low influence
+
+		glUniform3f(lightAmbientLoc, ambientColor.x, ambientColor.y, ambientColor.z);
+		glUniform3f(lightDiffuseLoc, diffuseColor.x, diffuseColor.y, diffuseColor.z);
+
 		// Create camera transformations
 		glm::mat4 view;
 		view = camera.GetViewMatrix();
