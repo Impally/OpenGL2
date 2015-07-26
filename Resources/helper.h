@@ -5,6 +5,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <SOIL.h>
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
